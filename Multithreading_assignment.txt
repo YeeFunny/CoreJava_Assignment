@@ -1,0 +1,130 @@
+Q1) Is the volatile modifier required when working with locks to guarantee memory visibility? 
+Answer:
+To guarantee changes made by one thread to shared data are visible to other threads, synchronization or volatile keyword works. But if atomicity is required, which means that only one thread or process can execute a block of code at a time, synchronization keyword should be used.
+
+Q2)  I've found these two ways to write threads:
+
+With implements Runnable:
+
+public class MyRunnable implements Runnable {
+    public void run() {
+        //Code
+    }
+}
+//Started with a "new Thread(new MyRunnable()).start()" call
+Or, with extends Thread:
+
+public class MyThread extends Thread {
+    public MyThread() {
+        super("MyThread");
+    }
+    public void run() {
+        //Code
+    }
+}
+//Started with a "new MyThread().start()" call
+Is there any significant difference in these two blocks of code ?
+Answer:
+Since Java programming language doesn't support multiple inheritances of class, but it allows multiple interfaces implementation. If we want to extend another class, implementing Runnable would be a better choice.
+By extending Thread class, each of thread creates unique object and associates with it. However, same object is shared using Runnable implementation.
+
+Q3) Please create a daemon thread in java which is printing current time on console after every 1 second till your main program is running. (You can write any code in ur main method to be executed by ur main thread)
+
+Q4) public void foo() {
+    synchronized (this) {
+        // do something thread-safe
+    }
+}
+and:
+
+public synchronized void foo() {
+    // do something thread-safe
+}
+Are these two codes same or any difference in them? Should we use synchronized(this) in our code? Please explain why or why not?
+Answer:
+The main differences are:
+1) Synchronized(this) reduce scope of lock. For synchronized methods, the lock will be held throughout the method scope, while in the second way, the lock is held only during that block scope also known as critical section. As scope of lock is inversely proportional to performance, its always better to lock only critical section of code.
+2) In case of synchronized method, lock is acquired by thread when it enter method and released when it leaves method, either normally or by throwing Exception. On the other hand in case of synchronized(this), thread acquires lock when they enter synchronized block and release when they leave synchronized block.
+
+Q5) What is the difference in wait and sleep methods in java?
+Answer:
+Sleep():
+1) It is a static method on Thread class, which can be called from any context.
+2) It makes the current thread into the "Blocked" state for specified amount of time. During this time, the thread keeps the lock (monitors) it has acquired.
+3) A sleeping can be awaked by interrupt or time expires.
+4) It is called on a thread.
+Wait():
+1) It is a method on Object class, which can only be called from a synchronized block or method.
+2) It makes the current thread into the "Blocked" state. The call to wait() releases the acquired lock.
+3) A waiting thread can be awake by notify() or notifyAll() method. 
+4) It is called on an object.
+
+Q6) What is the difference in notify and notify all?
+Answer:
+notify() method gives the notification for only one thread which is waiting for a particular object, and which thread will get the notification depends upon the JVM. notifyAll() methods give the notification to all waiting threads of a particular object. 
+
+Q7) What is the difference in class lock and the object lock?
+Answer:
+Object level lock synchronize a non-static method or non-static code block such that only one thread will be able to execute the code block on given instance of the class. This should always be done to make instance level data thread safe. Once method execution completes, it automatically thread releases the lock.
+Class level lock prevents multiple threads to enter in synchronized block in any of all available instances of the class on runtime. Class level locking should always be done to make static data thread safe. Once method execution completes automatically thread releases the lock.
+
+Q8) How many threads can a Java VM support? Does this vary by vendor? by operating system? other factors? Is it always better to write a code using multithreading or are there any disadvantages of doing multithreading?
+Answer:
+The number of threads a Java VM supports depends on many factors, such as CPU, ram, operating system, Java release, JVM, and also how many resources each thread uses. 
+There are several disadvantages of multithreading. It is difficult to write, debugging, testing and manageing concurrency. Also result is sometimes unpredictable with multithreading, and there is overhead switching of context. The deadlock could emerge when using multithreading.
+
+Q9) Is it correct to say that static means one copy of the value for all objects and volatile means one copy of the value for all threads? Anyway a static variable value is also going to be one value for all threads, then why should we go for volatile?
+Answer:
+A static variable means that there will be only one copy shared with all objects of the class. Threads may have their own locally cached values of it.
+A volatile variable will be one variable for each Object. And a thread may also cache a variable value locally.
+Since each thread will cache a variable value locally, when mulitple threads update a variable of the same Object concurrently, cached values of several threads could be old. With the volatile keyword, each thread is forced to get the up-to-date variable instead of using cached value.
+
+Q10) What is an InterruptedException? What is the difference between the following ways of handling InterruptedException? What is the best way to do it?
+
+try{
+ //...
+} catch(InterruptedException e) { 
+   Thread.currentThread().interrupt(); 
+}
+OR
+
+try{
+ //...
+} catch(InterruptedException e) {
+   throw new RuntimeException(e);
+}
+
+Answer:
+The InterruptedException is an exception thrown when a thread is waiting, sleeping, or otherwise occupied, and the thread is interrupted, either before or during the activity.
+The first way is better. From the first method, the code that calls interrupt() could get the information that an interruption took place by setted interrupted flag. However, using the second method, we could invent a new runtime exception but the root cause might get lost.
+
+Q11) When do we use AtomicReference?
+Answer:
+The AtomicReference class provides an object reference which can be read and written atomically. When multiple threads attempting to change a reference, and we want to keep the reference end up in an consistent state, we could use AtomicReference.
+
+Is it needed to create objects in all multithreaded programs?
+
+Provide a simple example where AtomicReference should be used.
+Answer:
+In an e-commerce application, the operation on quantity in stock should be atomical. Thus, AtomicReference could be used.
+
+Q12) How I can pass a parameter to a thread? Also, how does it work for anonymous classes?
+Answer:
+The parameter could be passed by the constructor or the setter of the self-create thread class object. 
+Since an anonymous class can access local variables in its enclosing scope that are declared as final or effectively final, we can pass a parameter to the anonymous classes through this way.
+
+Q13)  What is the best way to implement Singleton in Java, in a multithreaded environment?
+Answer:
+The double-checked locking design pattern could be the best way. 
+
+What happens when multiple threads try to access getInstance() method at the same time?
+Answer:
+If lazy initialization on the singleton is used, multiple instances could be created.
+
+Can we make singleton's getInstance() synchronized?
+Answer:
+We can make getInstance() synchronized, it would mguarantee the thread safety. However, it could also cause locking overhead and unnecessary synchronization once the instance variable is initialized.
+
+Is synchronization really needed, when using Singleton classes?
+Answer:
+Synchronization is needed for thread safty.
