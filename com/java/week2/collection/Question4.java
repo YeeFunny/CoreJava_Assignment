@@ -8,7 +8,6 @@ import java.util.TreeMap;
 public class Question4 {
 	
 	static boolean checkNullKey(Map map) {
-		
 		if (map == null || map.size() == 0) {
 			return false;
 		}
@@ -21,6 +20,7 @@ public class Question4 {
 		}
 		return false;
 	}
+	
 	public static void main(String[] args) {
 		HashMap map1 = new HashMap();
 		map1.put(null, 1);

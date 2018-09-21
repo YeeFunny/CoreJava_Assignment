@@ -30,7 +30,7 @@ public class Question8 {
 		User u3 = new User("Anna");
  		List<User> users = new ArrayList<User>(Arrays.asList(u1, u2, u3));
  		Collections.sort(users);
-		users.forEach(s -> System.out.println(s.getName()));	
+		users.forEach(s -> System.out.println(s.getName()));
 	}
 }
 

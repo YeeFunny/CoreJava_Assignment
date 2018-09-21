@@ -24,19 +24,16 @@ class MyComparator implements Comparator<MyString> {
 
 	@Override
 	public int compare(MyString o1, MyString o2) {
-		// TODO Auto-generated method stub
-		if (o1.name.toLowerCase().charAt(0) == o2.name.toLowerCase().charAt(0)) {
-			if (o1.name.length() < o2.name.length())
-				return -1;
-			else if (o1.name.length() > o2.name.length())
-				return 1;
-			return 0;
-		} else if (o1.name.toLowerCase().startsWith("*")) {
+		int index1 = o1.name.toLowerCase().indexOf("united");
+		int index2 = o2.name.toLowerCase().indexOf("united");
+		int len1 = o1.name.length();
+		int len2 = o2.name.length();
+		if (index1 == index2) {
+			return len1 >= len2 ? (len1 == len2 ? 0 : 1) : -1;
+		} else if (index1 < index2) {
 			return -1;
-		} else if (o2.name.toLowerCase().startsWith("*")) {
-			return 1;
 		} else {
-			return 0;
+			return 1;
 		}
 	}
 }

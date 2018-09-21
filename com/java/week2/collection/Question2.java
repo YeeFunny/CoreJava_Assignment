@@ -1,6 +1,8 @@
 package com.java.week2.collection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Question2 {
@@ -11,23 +13,12 @@ public class Question2 {
 		Employee e2 = new Employee(2, "Paul");
 		Employee e3 = new Employee(3, "David");
 		
-		ImmutableList list = new ImmutableList(Arrays.asList(e1, e2, e3));
-		List<Employee> l = list.getList();
-		for (Employee e : l) {
+		List<Employee> a = new ArrayList<Employee>(Arrays.asList(e1, e2, e3));
+		a = Collections.unmodifiableList(a);
+		
+		for (Employee e : a) {
 			System.out.println("Id: " + e.getId() + "; Name: " + e.getName());
 		}
-	}
-}
-
-final class ImmutableList {
-	private List<Employee> list;
-	
-	public ImmutableList(List<Employee> list) {
-		this.list = list;
-	}
-
-	public List<Employee> getList() {
-		return list;
 	}
 }
 

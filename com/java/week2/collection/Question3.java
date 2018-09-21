@@ -1,11 +1,12 @@
 package com.java.week2.collection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Question3 {
 
-	static ArrayList<String> addComma(ArrayList<String> list) {
-		ArrayList<String> newList = new ArrayList<String>();
+	static List<String> addComma(List<String> list) {
+		List<String> newList = new ArrayList<String>();
 		if (list != null) {
 			for (String str : list) {
 				str = str.replaceAll(" ", " ,");
@@ -16,7 +17,7 @@ public class Question3 {
 	}
 
 	public static void main(String[] args) {
-		ArrayList<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		list.add("cat mat bat");
 		list.add("rat sat bat");
 		list.add("wat fat got");
